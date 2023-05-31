@@ -55,13 +55,15 @@ void UIPEthernetClass::init(uint8_t csPin)
 
 #if UIP_UDP
 int
-UIPEthernetClass::begin(const uint8_t* mac, unsigned long timeout, unsigned long responseTimeout)
+UIPEthernetClass::begin(const uint8_t* mac, unsigned long timeout, unsigned long responseTimeout, const char *hostName)
 {
   static DhcpClass s_dhcp;
   _dhcp = &s_dhcp;
 
   // Initialise the basic info
   init(mac);
+
+  _dhcp->setHostName(hostName);
 
   // Now try to get our config info from a DHCP server
   int ret = _dhcp->beginWithDHCP((uint8_t*)mac, timeout, responseTimeout);

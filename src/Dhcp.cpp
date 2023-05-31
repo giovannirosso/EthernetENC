@@ -5,6 +5,11 @@
 #include <Arduino.h>
 #include "utility/util.h"
 
+void DhcpClass::setHostName(const char* name)
+{
+    strcpy(_host_name, name);
+}
+
 int DhcpClass::beginWithDHCP(uint8_t *mac, unsigned long timeout, unsigned long responseTimeout)
 {
     _dhcpLeaseTime=0;
@@ -204,8 +209,8 @@ void DhcpClass::send_DHCP_MESSAGE(uint8_t messageType, uint16_t secondsElapsed)
 
     // OPT - host name
     buffer[16] = hostName;
-    buffer[17] = strlen(HOST_NAME) + 6; // length of hostname + last 3 bytes of mac address
-    strcpy((char*)&(buffer[18]), HOST_NAME);
+    buffer[17] = strlen(_host_name) + 6; // length of hostname + last 3 bytes of mac address
+    strcpy((char*)&(buffer[18]), _host_name);
 
     printByte((char*)&(buffer[24]), _dhcpMacAddr[3]);
     printByte((char*)&(buffer[26]), _dhcpMacAddr[4]);

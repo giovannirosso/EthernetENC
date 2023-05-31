@@ -44,7 +44,9 @@
 #define MAGIC_COOKIE		0x63825363
 #define MAX_DHCP_OPT	16
 
+#if !defined(HOST_NAME)
 #define HOST_NAME "ENC28J"
+#endif
 #define DEFAULT_LEASE	(900) //default lease time in seconds
 
 #define DHCP_CHECK_NONE         (0)
@@ -164,6 +166,7 @@ private:
   unsigned long _secTimeout;
   uint8_t _dhcp_state;
   EthernetUDP _dhcpUdpSocket;
+  char _host_name[7];
   
   int request_DHCP_lease();
   void reset_DHCP_lease();
@@ -181,6 +184,8 @@ public:
   
   int beginWithDHCP(uint8_t *, unsigned long timeout = 60000, unsigned long responseTimeout = 4000);
   int checkLease();
+
+  void setHostName(const char* aName);
 };
 
 #endif
